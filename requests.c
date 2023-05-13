@@ -21,16 +21,21 @@ char *compute_get_request(char *host, char *url, char *query_params,
     } else {
         sprintf(line, "GET %s HTTP/1.1", url);
     }
-
     compute_message(message, line);
 
     // Step 2: add the host
+    sprintf(line, "Host: %s", host);
+    compute_message(message, line);
+    
     // Step 3 (optional): add headers and/or cookies, according to the protocol format
-    if (cookies != NULL) {
-       
-    }
+    // TODO
+    if (cookies != NULL);
     // Step 4: add final new line
     compute_message(message, "");
+
+ 
+    free(line);
+
     return message;
 }
 

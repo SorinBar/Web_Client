@@ -38,6 +38,9 @@ int open_connection(char *host_ip, int portno, int ip_type, int socket_type, int
     serv_addr.sin_port = htons(portno);
     inet_aton(host_ip, &serv_addr.sin_addr);
 
+    int optval = 1;
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+
     /* connect the socket */
     if (connect(sockfd, (struct sockaddr*) &serv_addr, sizeof(serv_addr)) < 0)
         error("ERROR connecting");
