@@ -1,11 +1,13 @@
 CC=gcc
 CFLAGS=-I.
 
-client: client.c requests.c helpers.c buffer.c
-	$(CC) -o client client.c requests.c helpers.c buffer.c -Wall
+all: client run clean
+
+client: client.c requests.c helpers.c buffer.c parson.c
+	$(CC) -o client client.c requests.c helpers.c buffer.c parson.c -Wall
 
 run: client
-	./client
+	valgrind ./client
 
 clean:
 	rm -f *.o client
