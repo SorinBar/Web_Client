@@ -7,8 +7,6 @@
 #include <netdb.h>      /* struct hostent, gethostbyname */
 #include <arpa/inet.h>
 #include "helpers.h"
-#include "requests.h"
-#include "parson.h"
 #include "utils.h"
 
 char *host = "34.254.242.81";
@@ -25,6 +23,7 @@ char *token = NULL;
 // Send message to the server and return the response
 char *HTTP_send_recv(char *message);
 void cookie_free();
+void token_free();
 void client_register();
 void client_login();
 void client_enter_library();
@@ -55,6 +54,7 @@ int main(int argc, char *argv[])
     }
 
     cookie_free();
+    token_free();
 
     return 0;
 }
@@ -74,6 +74,13 @@ void cookie_free() {
     if (cookie != NULL) {
         free(cookie);
         cookie = NULL;
+    }
+}
+
+void token_free() {
+    if (token != NULL) {
+        free(token);
+        token = NULL;
     }
 }
 
@@ -201,18 +208,14 @@ void client_enter_library() {
     // Server communication
     response = HTTP_send_recv(message);
 
-    printf("%s\n", response);
-
     code = extractCode(response);
     if (code == 200) {
         printf("Entered library!\n");
 
-        JSON_Value* root_value = json_parse_string(basic_extract_json_response(response));
-        JSON_Object* root_object = json_value_get_object(root_value);
-        const char* token = json_object_dotget_string(root_object, "token");
+        token_free();
+        token = extractToken(response);
 
         printf("token: %s\n", token);
-        json_value_free(root_value);
     }
     if (code == 401) {
         printf("You are not logged in.\n");
