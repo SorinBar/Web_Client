@@ -24,8 +24,10 @@ char *token = NULL;
 
 // Send message to the server and return the response
 char *HTTP_send_recv(char *message);
+
 void cookie_free();
 void token_free();
+
 void client_register();
 void client_login();
 void client_enter_library();

@@ -128,7 +128,7 @@ char *receive_from_server(int sockfd)
     return buffer.data;
 }
 
-char *basic_extract_json_response(char *str)
+char *basic_extract_json_response(char *response)
 {
-    return strstr(str, "{\"");
+    return strstr(response, "\r\n\r\n") + 4;
 }

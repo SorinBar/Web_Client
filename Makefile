@@ -1,9 +1,9 @@
 CC=gcc
 CFLAGS=-I.
 
-all: client run clean
+all: build run clean
 
-client: client.c requests.c helpers.c buffer.c parson.c -lm
+build: client.c requests.c helpers.c buffer.c parson.c -lm
 	$(CC) -o client client.c requests.c helpers.c buffer.c parson.c -lm -Wall
 
 run: client
@@ -11,3 +11,4 @@ run: client
 
 clean:
 	rm -f *.o client
+

@@ -94,7 +94,7 @@
     }
 
     void printBooks(char *response) {
-        JSON_Value* root_value = json_parse_string(basic_extract_json_response(response) - 1);
+        JSON_Value* root_value = json_parse_string(basic_extract_json_response(response));
         if (root_value == NULL) {
             eerror("JSON parse error\n");
         }
