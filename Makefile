@@ -1,10 +1,11 @@
-CC=gcc
-CFLAGS=-I.
+CC = gcc
+CFLAGS = -Wall
+LDFLAGS = -lm
 
 all: build run clean
 
 build: client.c requests.c helpers.c buffer.c parson.c -lm
-	$(CC) -o client client.c requests.c helpers.c buffer.c parson.c -lm -Wall
+	$(CC) $(CFLAGS) client.c requests.c helpers.c buffer.c parson.c -o client $(LDFLAGS)
 
 run: 
 	./client
