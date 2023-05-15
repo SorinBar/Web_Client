@@ -122,10 +122,8 @@
         if (root_value == NULL) {
             eerror("JSON parse error\n");
         }
-        
+
         JSON_Object* book = json_value_get_object(root_value);
-        number = (int)(round(json_object_get_number(book, "id")));
-        printf("id: %d\n", number);
         str = json_object_get_string(book, "title");
         printf("title: %s\n", str);
         str = json_object_get_string(book, "author");
