@@ -37,6 +37,9 @@ char *compute_get_request(char *host, char *url, char *query_params,
         sprintf(line, "Authorization: Bearer %s", token);
         compute_message(message, line);
     }
+    // Tell the server to not keep the socket alive
+    sprintf(line, "Connection: close");
+    compute_message(message, line);
 
     // Step 4: add final new line
     compute_message(message, "");
@@ -79,6 +82,9 @@ char *compute_post_request(char *host, char *url, char* content_type, char *body
         sprintf(line, "Authorization: Bearer %s", token);
         compute_message(message, line);
     }
+    // Tell the server to not keep the socket alive
+    sprintf(line, "Connection: close");
+    compute_message(message, line);
 
     // Step 5: add new line at end of header
     compute_message(message, "");

@@ -3,8 +3,8 @@ CFLAGS=-I.
 
 all: client run clean
 
-client: client.c requests.c helpers.c buffer.c parson.c
-	$(CC) -o client client.c requests.c helpers.c buffer.c parson.c -Wall
+client: client.c requests.c helpers.c buffer.c parson.c -lm
+	$(CC) -o client client.c requests.c helpers.c buffer.c parson.c -lm -Wall
 
 run: client
 	valgrind ./client
