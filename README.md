@@ -121,5 +121,5 @@
             - Parse response.
             - In case of an error alerts the user.
     
-    - **Note:** If a user introduces an invalid input, the commands need to be recalled. The client app won't wait for valid input to be introduced.
+        - **Note:** If a user introduces an invalid input, the commands need to be recalled. The client app won't wait for valid input to be introduced.
  
