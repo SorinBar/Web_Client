@@ -15,6 +15,7 @@ int port = 8080;
 char *route_register = "/api/v1/tema/auth/register";
 char *route_login = "/api/v1/tema/auth/login";
 char *route_enter = "/api/v1/tema/library/access";
+char *route_books = "/api/v1/tema/library/books";
 
 char *type = "application/json";
 char *cookie = NULL;
@@ -27,6 +28,7 @@ void token_free();
 void client_register();
 void client_login();
 void client_enter_library();
+void client_get_books();
 
 int main(int argc, char *argv[])
 {
@@ -35,21 +37,17 @@ int main(int argc, char *argv[])
     while (1) {
         fgets(cmd, 50, stdin);
         cmd[strlen(cmd) - 1] = '\0';
-        // Exit
+
         if (!strcmp(cmd, "exit")) {
             break;
-        }
-        // Register
-        if (!strcmp(cmd, "register")) {
+        } else if (!strcmp(cmd, "register")) {
             client_register();
-        }
-        // Login
-        if (!strcmp(cmd, "login")) {
+        } else if (!strcmp(cmd, "login")) {
             client_login();
-        }
-        // Enter library
-        if (!strcmp(cmd, "enter_library")) {
+        } else if (!strcmp(cmd, "enter_library")) {
             client_enter_library();
+        } else if (!strcmp(cmd, "get_books")) {
+            client_get_books();
         }
     }
 
@@ -118,7 +116,7 @@ void client_register() {
     char *body_data = json_serialize_to_string(root_value);
 
     // Create message
-    message = compute_post_request(host, route_register, type, body_data, cookie);
+    message = compute_post_request(host, route_register, type, body_data, cookie, token);
 
     // Server communication
     response = HTTP_send_recv(message);
@@ -172,7 +170,7 @@ void client_login() {
     char *body_data = json_serialize_to_string(root_value);
 
     // Create message
-    message = compute_post_request(host, route_login, type, body_data, cookie);
+    message = compute_post_request(host, route_login, type, body_data, cookie, token);
 
     // Server communication
     response = HTTP_send_recv(message);
@@ -203,7 +201,7 @@ void client_enter_library() {
     char *response;
 
     // Create message
-    message = compute_get_request(host, route_enter, NULL, cookie);
+    message = compute_get_request(host, route_enter, NULL, cookie, token);
 
     // Server communication
     response = HTTP_send_recv(message);
@@ -220,6 +218,36 @@ void client_enter_library() {
     if (code == 401) {
         printf("You are not logged in.\n");
     }
+
+    // Free memory
+    free(message);
+    free(response);
+}
+
+void client_get_books() {
+    int code;
+    char *message;
+    char *response;
+    
+    // Create message
+    message = compute_get_request(host, route_books, NULL, cookie, token);
+
+    // Server communication
+    response = HTTP_send_recv(message);
+    printf("%s\n", response);
+
+    // code = extractCode(response);
+    // if (code == 200) {
+    //     printf("Logged in!\n");
+    //     cookie = extractCookie(response);
+    //     printf("Cookie: %s\n", cookie);
+    // }
+    // if (code == 204) {
+    //     printf("Already logged in.\n");
+    // }
+    // if (code == 400) {
+    //     printf("Credentials are not good.\n");
+    // }
 
     // Free memory
     free(message);

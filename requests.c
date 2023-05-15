@@ -10,7 +10,7 @@
 #include "requests.h"
 
 char *compute_get_request(char *host, char *url, char *query_params,
-                            char *cookie)
+                            char *cookie, char *token)
 {
     char *message = calloc(BUFLEN, sizeof(char));
     char *line = calloc(LINELEN, sizeof(char));
@@ -32,6 +32,12 @@ char *compute_get_request(char *host, char *url, char *query_params,
         sprintf(line, "Cookie: %s;", cookie);
         compute_message(message, line);
     }
+
+    if (token != NULL) {
+        sprintf(line, "Authorization: Bearer %s", token);
+        compute_message(message, line);
+    }
+
     // Step 4: add final new line
     compute_message(message, "");
 
@@ -42,7 +48,7 @@ char *compute_get_request(char *host, char *url, char *query_params,
 }
 
 char *compute_post_request(char *host, char *url, char* content_type, char *body_data,
-                            char *cookie)
+                            char *cookie, char *token)
 {
     char *message = calloc(BUFLEN, sizeof(char));
     char *line = calloc(LINELEN, sizeof(char));
@@ -66,6 +72,11 @@ char *compute_post_request(char *host, char *url, char* content_type, char *body
     // Step 4: add cookies
     if (cookie != NULL) {
         sprintf(line, "Cookie: %s;", cookie);
+        compute_message(message, line);
+    }
+
+    if (token != NULL) {
+        sprintf(line, "Authorization: Bearer %s", token);
         compute_message(message, line);
     }
 
