@@ -50,6 +50,27 @@
 - Code:
     - Main functions:
         -   ```
+            char *compute_get_request(char *host, char *url, char *query_params, char *cookie, char *token);
+            
+            /*  Info:
+                -> Computes and returns a GET request string
+            */
+            ```
+        -   ```
+            char *compute_post_request(char *host, char *url, char* content_type,char *body_data, char *cookie, char *token);
+            
+            /*  Info:
+                -> Computes and returns a POST request string
+            */
+            ```
+        -   ```
+            char *compute_delete_request(char *host, char *url, char *cookie, char *token);
+            
+            /*  Info:
+                -> Computes and returns a DELETE request string
+            */
+            ```
+        -   ```
             char *HTTP_send_recv(char *message);
             
             /*  Info:
@@ -88,27 +109,6 @@
             
             /*  Info:
                 -> Functions for every user command
-            */
-            ```
-        -   ```
-            char *compute_get_request(char *host, char *url, char *query_params, char *cookie, char *token);
-            
-            /*  Info:
-                -> Computes and returns a GET request string
-            */
-            ```
-        -   ```
-            char *compute_post_request(char *host, char *url, char* content_type,char *body_data, char *cookie, char *token);
-            
-            /*  Info:
-                -> Computes and returns a POST request string
-            */
-            ```
-        -   ```
-            char *compute_delete_request(char *host, char *url, char *cookie, char *token);
-            
-            /*  Info:
-                -> Computes and returns a DELETE request string
             */
             ```
     - Flow
