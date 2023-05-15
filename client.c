@@ -61,6 +61,8 @@ int main(int argc, char *argv[])
             client_delete_book();
         } else if (!strcmp(cmd, "logout")) {
             client_logout();
+        } else {
+            printf("Wrong command.\n");
         }
     }
 
@@ -195,7 +197,6 @@ void client_login() {
     if (code == 200) {
         printf("Logged in!\n");
         cookie = extractCookie(response);
-        printf("Cookie: %s\n", cookie);
     } else if (code == 204) {
         printf("Already logged in.\n");
     } else if (code == 400) {
@@ -224,11 +225,8 @@ void client_enter_library() {
     code = extractCode(response);
     if (code == 200) {
         printf("Entered library!\n");
-
         token_free();
         token = extractToken(response);
-
-        printf("token: %s\n", token);
     } else if (code == 401) {
         printf("Please log in.\n");
     }
