@@ -16,6 +16,7 @@ char *route_register = "/api/v1/tema/auth/register";
 char *route_login = "/api/v1/tema/auth/login";
 char *route_enter = "/api/v1/tema/library/access";
 char *route_books = "/api/v1/tema/library/books/";
+char *route_logout = "/api/v1/tema/auth/logout";
 
 char *type = "application/json";
 char *cookie = NULL;
@@ -31,6 +32,8 @@ void client_enter_library();
 void client_get_books();
 void client_get_book();
 void client_add_book();
+void client_delete_book();
+void client_logout();
 
 int main(int argc, char *argv[])
 {
@@ -54,6 +57,10 @@ int main(int argc, char *argv[])
             client_get_book();
         } else if (!strcmp(cmd, "add_book")) {
             client_add_book();
+        } else if (!strcmp(cmd, "delete_book")) {
+            client_delete_book();
+        } else if (!strcmp(cmd, "logout")) {
+            client_logout();
         }
     }
 
@@ -290,7 +297,7 @@ void client_get_book() {
     } else if (code == 403) {
         printf("Please enter the library.\n");
     } else  if (code == 404) {
-        printf("No book was found.\n");
+        printf("Book not found.\n");
     }
 
     // Free memory
@@ -372,6 +379,74 @@ void client_add_book() {
     // Free memory
     json_free_serialized_string(body_data);
     json_value_free(root_value);
+    free(message);
+    free(response);
+}
+
+void client_delete_book() {
+    int code;
+    char *message;
+    char *response;
+    char id[20];
+    char route_book[50];
+
+    printf("id=");
+    fgets(id, 20, stdin);
+    id[strlen(id) - 1] = '\0';
+
+    if (!isUInt(id)) {
+        printf("Id is a positive integer.\n");
+        
+        return;
+    }
+
+    // Generate book route
+    strcpy(route_book, route_books);
+    strcat(route_book, id);
+
+    // Create message
+    message = compute_delete_request(host, route_book, cookie, token);
+
+    // Server communication
+    response = HTTP_send_recv(message);
+
+    // Code verification
+    code = extractCode(response);    
+    if (code == 200) {
+        printf("Book deleted!\n");
+    } else if (code == 403) {
+        printf("Please enter the library.\n");
+    } else  if (code == 404) {
+        printf("Book not found.\n");
+    }
+
+    // Free memory
+    free(message);
+    free(response);
+}
+
+void client_logout() {
+    int code;
+    char *message;
+    char *response;
+
+    // Create message
+    message = compute_get_request(host, route_logout, NULL, cookie, token);
+
+    // Server communication
+    response = HTTP_send_recv(message);
+
+    // Code verification
+    code = extractCode(response);    
+    if (code == 200) {
+        printf("Logged out!\n");
+        cookie_free();
+        token_free();
+    } else  if (code == 400) {
+        printf("You are not logged in.\n");
+    }
+
+    // Free memory
     free(message);
     free(response);
 }

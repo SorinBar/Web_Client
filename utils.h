@@ -143,8 +143,4 @@
         json_value_free(root_value);
     }
 
-
-
-
-    
 #endif

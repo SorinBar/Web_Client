@@ -97,3 +97,37 @@ char *compute_post_request(char *host, char *url, char* content_type, char *body
 
     return message;
 }
+
+
+char *compute_delete_request(char *host, char *url, char *cookie, char *token)
+{
+    char *message = calloc(BUFLEN, sizeof(char));
+    char *line = calloc(LINELEN, sizeof(char));
+
+    sprintf(line, "DELETE %s HTTP/1.1", url);
+    compute_message(message, line);
+
+    sprintf(line, "Host: %s", host);
+    compute_message(message, line);
+
+    if (cookie != NULL) {
+        sprintf(line, "Cookie: %s;", cookie);
+        compute_message(message, line);
+    }
+
+    if (token != NULL) {
+        sprintf(line, "Authorization: Bearer %s", token);
+        compute_message(message, line);
+    }
+
+    // Tell the server to not keep the socket alive
+    sprintf(line, "Connection: close");
+    compute_message(message, line);
+
+    compute_message(message, "");
+
+    // Free line
+    free(line);
+
+    return message;
+}
